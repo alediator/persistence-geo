@@ -119,6 +119,12 @@
             <version>4.8.1</version>
             <scope>test</scope>
         </dependency>
+        <!-- OpenFleetService dependency -->
+        <dependency>
+	        <groupId>com.emergya.openfleetservices</groupId>
+			<artifactId>importer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
     </dependencies>
 
     <build>
