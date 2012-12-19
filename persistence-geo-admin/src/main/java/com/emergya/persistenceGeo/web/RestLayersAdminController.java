@@ -70,7 +70,7 @@ import com.emergya.persistenceGeo.service.MapConfigurationAdminService;
  * @author <a href="mailto:adiaz@emergya.com">adiaz</a>
  */
 @Controller
-public class RestLayersAdminController extends RestPersistenceGeoController
+public class RestLayersAdminController extends RestPersistenceGeoSecureController
 		implements Serializable {
 	
 	/**
