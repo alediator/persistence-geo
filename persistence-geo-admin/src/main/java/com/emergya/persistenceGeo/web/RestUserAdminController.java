@@ -80,6 +80,8 @@ public class RestUserAdminController implements Serializable{
 	protected final String RESULTS= "results";
 	protected final String ROOT= "data";
 	protected final String SUCCESS= "success";
+	
+	private static final String LAYERS_FOLDER = "User's layers";
 
 	@RequestMapping(value = "/persistenceGeo/admin/createUser", method = RequestMethod.POST)
 	public @ResponseBody
@@ -128,7 +130,13 @@ public class RestUserAdminController implements Serializable{
 			folder = new FolderDto();
 			folder.setIdUser(user.getId());
 			folder.setName("");
-			foldersAdminService.saveFolder(folder);
+			folder = foldersAdminService.saveFolder(folder);
+			//Create layers folder
+			FolderDto layersFolder = new FolderDto();
+			layersFolder.setIdUser(user.getId());
+			layersFolder.setName(LAYERS_FOLDER);
+			layersFolder.setIdParent(folder.getId());
+			foldersAdminService.saveFolder(layersFolder);
 		}
 		
 		return user;
