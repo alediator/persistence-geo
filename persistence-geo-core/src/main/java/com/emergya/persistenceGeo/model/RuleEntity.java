@@ -44,6 +44,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.emergya.persistenceGeo.metaModel.AbstractRuleEntity;
 
 /**
@@ -99,9 +102,10 @@ public class RuleEntity extends AbstractRuleEntity {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@OneToMany(targetEntity=RulePropertyEntity.class, orphanRemoval = true,
+	@OneToMany(targetEntity=RulePropertyEntity.class,
 			cascade = {CascadeType.ALL},
 			fetch = FetchType.LAZY)
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	public List<RulePropertyEntity> getProperties() {
 		return this.properties;
 	}

@@ -44,6 +44,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.emergya.persistenceGeo.metaModel.AbstractStyleEntity;
 
 /**
@@ -98,9 +101,10 @@ public class StyleEntity extends AbstractStyleEntity {
 		this.id = (Long) id;
 	}
 
-	@OneToMany(targetEntity=RuleEntity.class, orphanRemoval = true,
+	@OneToMany(targetEntity=RuleEntity.class,
 			cascade = {CascadeType.ALL},
 			fetch = FetchType.LAZY)
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	public List<RuleEntity> getRuleList() {
 		return ruleList;
 	}

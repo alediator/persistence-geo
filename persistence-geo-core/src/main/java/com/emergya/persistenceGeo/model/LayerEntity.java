@@ -47,6 +47,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import com.emergya.persistenceGeo.metaModel.AbstractLayerEntity;
@@ -167,9 +169,10 @@ public class LayerEntity extends AbstractLayerEntity {
 		this.id = (Long) id;
 	}
 	
-	@OneToMany(targetEntity=LayerPropertyEntity.class, orphanRemoval = true,
+	@OneToMany(targetEntity=LayerPropertyEntity.class,
 			cascade = {CascadeType.ALL},
 			fetch = FetchType.LAZY)
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	public List<LayerPropertyEntity> getProperties() {
 		return this.properties;
 	}
