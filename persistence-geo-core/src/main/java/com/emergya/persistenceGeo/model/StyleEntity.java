@@ -44,8 +44,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Cascade;
 
 import com.emergya.persistenceGeo.metaModel.AbstractStyleEntity;
 
@@ -104,7 +103,7 @@ public class StyleEntity extends AbstractStyleEntity {
 	@OneToMany(targetEntity=RuleEntity.class,
 			cascade = {CascadeType.ALL},
 			fetch = FetchType.LAZY)
-	@OnDelete(action=OnDeleteAction.CASCADE)
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	public List<RuleEntity> getRuleList() {
 		return ruleList;
 	}

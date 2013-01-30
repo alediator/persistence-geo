@@ -102,15 +102,15 @@ public abstract class AbstractInitDatabase{
 	
 	private boolean isNeededUpdate(){
 		boolean ret = false;
-		if(sessionFactory instanceof SessionFactoryImpl
-				&& HBM2DDL_create.equals(((SessionFactoryImpl)sessionFactory).getProperties().getProperty(HBM2DDL))){
-			try{ 
-				executerSQL.execute(SQLFileutils.getSqlString(sqlDirectory
-					+ File.separator + SQL_TEST));
-				ret = true;
-			}catch (Exception e) {
-			}
-		}
+//		if(sessionFactory instanceof SessionFactoryImpl
+//				&& HBM2DDL_create.equals(((SessionFactoryImpl)sessionFactory).getProperties().getProperty(HBM2DDL))){
+//			try{ 
+//				executerSQL.execute(SQLFileutils.getSqlString(sqlDirectory
+//					+ File.separator + SQL_TEST));
+//				ret = true;
+//			}catch (Exception e) {
+//			}
+//		}
 		return ret;
 	}
 

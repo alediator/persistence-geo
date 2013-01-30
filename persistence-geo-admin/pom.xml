@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.emergya</groupId>
 		<artifactId>persistence-geo</artifactId>
-	        <version>1.5-rc2</version>
+	        <version>1.5-rc2-jpa1.0</version>
 	</parent>
 
 	<artifactId>persistence-geo-admin</artifactId>

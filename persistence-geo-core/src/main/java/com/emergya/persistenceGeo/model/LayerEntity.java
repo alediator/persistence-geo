@@ -47,8 +47,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 
 import com.emergya.persistenceGeo.metaModel.AbstractLayerEntity;
@@ -146,6 +145,7 @@ public class LayerEntity extends AbstractLayerEntity {
 	@OneToMany(targetEntity=StyleEntity.class, 
 			cascade = {CascadeType.ALL},
 			fetch = FetchType.LAZY)
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	public List<StyleEntity> getStyleList() {
 		return this.styleList;
 	}
@@ -172,7 +172,7 @@ public class LayerEntity extends AbstractLayerEntity {
 	@OneToMany(targetEntity=LayerPropertyEntity.class,
 			cascade = {CascadeType.ALL},
 			fetch = FetchType.LAZY)
-	@OnDelete(action=OnDeleteAction.CASCADE)
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	public List<LayerPropertyEntity> getProperties() {
 		return this.properties;
 	}
