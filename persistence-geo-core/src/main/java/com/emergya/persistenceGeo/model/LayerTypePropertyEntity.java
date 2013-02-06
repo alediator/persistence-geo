@@ -58,7 +58,7 @@ public class LayerTypePropertyEntity extends AbstractLayerTypePropertyEntity {
 
 	@Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_layer_type_property_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_layer_type_property_seq")
     @SequenceGenerator(name="gis_layer_type_property_seq", sequenceName = "gis_layer_type_property_seq", initialValue=100)
 	public Long getId() {
 		return this.id;

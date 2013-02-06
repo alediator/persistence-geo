@@ -124,7 +124,7 @@ public class LayerEntity extends AbstractLayerEntity {
 
 	@Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_layer_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_layer_seq")
     @SequenceGenerator(name="gis_layer_seq", sequenceName = "gis_layer_seq", initialValue=20, allocationSize=200)
 	public Long getId() {
 		return id;

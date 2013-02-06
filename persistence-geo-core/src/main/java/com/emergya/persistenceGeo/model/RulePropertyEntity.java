@@ -59,7 +59,7 @@ public class RulePropertyEntity extends AbstractRulePropertyEntity {
 
 	@Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO, 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, 
     				generator = "gis_rule_property_seq")
     @SequenceGenerator(name="gis_rule_property_seq", 
     					sequenceName = "gis_rule_property_seq", initialValue=1000, allocationSize=20)  

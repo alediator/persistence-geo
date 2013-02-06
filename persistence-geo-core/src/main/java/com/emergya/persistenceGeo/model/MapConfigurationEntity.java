@@ -59,7 +59,7 @@ public class MapConfigurationEntity extends AbstractMapConfigurationEntity {
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_map_conf_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_map_conf_seq")
 	@SequenceGenerator(name = "gis_map_conf_seq", sequenceName = "gis_map_conf_seq", initialValue = 0, allocationSize = 200)
 	public Long getId() {
 		return id;

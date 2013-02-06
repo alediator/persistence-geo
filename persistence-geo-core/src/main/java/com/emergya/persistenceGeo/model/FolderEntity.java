@@ -106,7 +106,7 @@ public class FolderEntity extends AbstractFolderEntity {
 	
 	@Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_folder_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_folder_seq")
     @SequenceGenerator(name="gis_folder_seq", sequenceName = "gis_folder_seq", initialValue=100)
 	public Long getId() {
 		return id;

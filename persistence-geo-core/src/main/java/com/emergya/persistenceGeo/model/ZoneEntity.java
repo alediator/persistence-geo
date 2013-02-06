@@ -108,7 +108,7 @@ public class ZoneEntity extends AbstractZoneEntity {
 
 	@Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_zone_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_zone_seq")
     @SequenceGenerator(name="gis_zone_seq", sequenceName = "gis_zone_seq", initialValue=100)
 	public Long getId() {
 		return id;

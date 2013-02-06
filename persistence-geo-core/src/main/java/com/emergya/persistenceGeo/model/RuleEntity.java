@@ -89,7 +89,7 @@ public class RuleEntity extends AbstractRuleEntity {
 
 	@Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_rule_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_rule_seq")
     @SequenceGenerator(name="gis_rule_seq", sequenceName = "gis_rule_seq", 
     				initialValue=100)
 	public Long getId() {

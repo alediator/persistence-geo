@@ -90,7 +90,7 @@ public class StyleEntity extends AbstractStyleEntity {
 
 	@Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_style_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_style_seq")
     @SequenceGenerator(name="gis_style_seq", sequenceName = "gis_style_seq", initialValue=100)
 	public Long getId() {
 		return id;

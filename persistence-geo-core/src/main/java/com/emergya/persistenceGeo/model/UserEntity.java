@@ -68,7 +68,7 @@ public class UserEntity extends AbstractUserEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_user_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_user_seq")
     @SequenceGenerator(name="gis_user_seq", sequenceName = "gis_user_seq", initialValue=100)
     public Long getId() {
         return id;

@@ -85,7 +85,7 @@ public class PermissionEntity extends AbstractPermissionEntity {
 
 	@Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_permission_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_permission_seq")
     @SequenceGenerator(name="gis_permission_seq", sequenceName = "gis_permission_seq", initialValue=100)
 	public Long getId() {
 		return id;

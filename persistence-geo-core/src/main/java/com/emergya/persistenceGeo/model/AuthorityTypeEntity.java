@@ -88,7 +88,7 @@ public class AuthorityTypeEntity extends AbstractAuthorityTypeEntity {
 
 	@Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "gis_authority_type_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gis_authority_type_seq")
     @SequenceGenerator(name="gis_authority_type_seq", sequenceName = "gis_authority_type_seq", initialValue=100)
 	public Long getId() {
 		return id;
