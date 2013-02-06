@@ -1,0 +1,3 @@
+[submodule "persistenceGeo"]
+	path = persistenceGeo
+	url = git@github.com:alediator/persistenceGeo.git
