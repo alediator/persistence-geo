@@ -28,6 +28,7 @@
  */
 package com.emergya.persistenceGeo.dao;
 
+import java.io.File;
 import java.net.URI;
 
 import com.emergya.persistenceGeo.utils.GsFeatureDescriptor;
@@ -118,5 +119,41 @@ public interface GeoserverDao {
 	 */
 	boolean deletePostgisFeatureTye(String workspaceName, String datastoreName,
 			String layerName);
+
+	/**
+	 * Check if a layer with <code>layerName</code> exists in the workspace
+	 * <code>workspaceName</code>
+	 * 
+	 * @param layerName
+	 *            layer name.
+	 * @param workspaceName
+	 *            workspace name.
+	 * @return <code>true</code> if a layer named <code>layerName</code> exists
+	 *         in the workspace named <code>workspaceName</code>.
+	 */
+	boolean existsLayerInWorkspace(String layerName, String workspaceName);
+	
+	/**
+	 * Create a Postgis datastore using a JNDI connection.
+	 * @param workspaceName
+	 *            the workspace where datastore will be created.
+	 * @param datastoreName
+	 *            the name of the new datastore.
+	 * @return
+	 */
+	public boolean createDatastoreJndi(String workspaceName,
+			String datastoreName);
+	
+	/**
+	 * Upload and publish a GeoTIFF image.
+	 * @param workspace 
+	 * 			workspace to use
+	 * @param storeName 
+	 * 			the store name to be used or created.
+	 * @parama geotiff 
+	 * 			the GeoTIFF file.
+	 * @return <code>true</code> if success.
+	 */
+	public boolean publishGeoTIFF(String workspace, String storeName, File geotiff);
 
 }
