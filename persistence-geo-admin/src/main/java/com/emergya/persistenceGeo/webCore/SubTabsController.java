@@ -29,6 +29,10 @@
  */
 package com.emergya.persistenceGeo.webCore;
 
+import java.util.List;
+
+import com.emergya.persistenceGeo.dto.TabDto;
+
 
 /**
  * Interfaz a implementar por los controles que lleven subtabs
@@ -40,10 +44,10 @@ public interface SubTabsController{
 	/**
 	 * @return subtabs para mostrar en formato 'tab1:dest1,tab2:dest2'
 	 */
-	public String getAllSubTabs();
+	public List<TabDto> getAllSubTabs();
 	
 	/**
 	 * @return SubTab seleccionada
 	 */
-	public int getSelectedSubTab();
+	public Long getSelectedSubTab();
 }
