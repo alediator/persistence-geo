@@ -34,6 +34,7 @@ import it.geosolutions.geoserver.rest.GeoServerRESTPublisher.ParameterConfigure;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 import it.geosolutions.geoserver.rest.HTTPUtils;
 import it.geosolutions.geoserver.rest.decoder.RESTCoverageList;
+import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
 import it.geosolutions.geoserver.rest.decoder.RESTLayer;
 import it.geosolutions.geoserver.rest.decoder.RESTWorkspaceList;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
@@ -829,5 +830,29 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 		}
 
 		return publisher.reset();
+	}
+	
+	/**
+	 * Retrieves a layer's datastore associated with the layer.
+	 * 
+	 * @param layerName
+	 * 
+	 * @return
+	 */
+	public RESTDataStore getDatastore(String layerName) {
+		GeoServerRESTReader reader;
+		try {
+			reader = getReader();
+			return getReader().getDatastore(
+					reader.getFeatureType(reader.getLayer(layerName)));
+
+		} catch (MalformedURLException e) {
+			LOG.error("Malformed Geoserver REST API URL", e);
+			throw new GeoserverException("Malformed Geoserver REST API URL", e);
+		} catch (NullPointerException np) {
+			LOG.error("Incorrect Geoserver layer '" + layerName + "'", np);
+			throw new GeoserverException("Incorrect Geoserver layer '"
+					+ layerName + "'", np);
+		}
 	}
 }

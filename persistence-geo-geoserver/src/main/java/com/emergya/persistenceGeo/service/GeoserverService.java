@@ -28,6 +28,8 @@
  */
 package com.emergya.persistenceGeo.service;
 
+import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
+
 import java.io.File;
 
 import com.emergya.persistenceGeo.utils.BoundingBox;
@@ -207,4 +209,13 @@ public interface GeoserverService {
 	 *         not.
 	 */
 	public boolean existsWorkspace(String workspaceName);
+	
+	/**
+	 * Retrieves a layer's datastore associated with the layer.
+	 * 
+	 * @param layerName
+	 * 
+	 * @return
+	 */
+	public RESTDataStore getDatastore(String layerName);
 }

@@ -28,6 +28,7 @@
  */
 package com.emergya.persistenceGeo.service.impl;
 
+import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
 import it.geosolutions.geoserver.rest.decoder.RESTWorkspaceList;
 import it.geosolutions.geoserver.rest.decoder.RESTWorkspaceList.RESTShortWorkspace;
 
@@ -212,8 +213,7 @@ public class GeoserverServiceImpl implements GeoserverService {
 			double[] coordTransformed = new double[4];
 
 			// Fill the array with the bounding box
-			sourceCoords[0] = nativeBoundingBox.getMinx();
-			sourceCoords[1] = nativeBoundingBox.getMiny();
+			sourceCoords[0] = nativeBoundingBox.getMinx();			sourceCoords[1] = nativeBoundingBox.getMiny();
 			sourceCoords[2] = nativeBoundingBox.getMaxx();
 			sourceCoords[3] = nativeBoundingBox.getMaxy();
 			transform.transform(sourceCoords, 0, coordTransformed, 0, 2);
@@ -390,5 +390,16 @@ public class GeoserverServiceImpl implements GeoserverService {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Retrieves a layer's datastore associated with the layer.
+	 * 
+	 * @param layerName
+	 * 
+	 * @return
+	 */
+	public RESTDataStore getDatastore(String layerName){
+		return getGsDao().getDatastore(layerName);
 	}
 }

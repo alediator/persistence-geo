@@ -28,6 +28,7 @@
  */
 package com.emergya.persistenceGeo.dao;
 
+import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
 import it.geosolutions.geoserver.rest.decoder.RESTWorkspaceList;
 
 import java.io.File;
@@ -270,4 +271,13 @@ public interface GeoserverDao {
 	boolean deleteStyle(String styleName);
 	
 	boolean reset();
+	
+	/**
+	 * Retrieves a layer's datastore associated with the layer.
+	 * 
+	 * @param layerName
+	 * 
+	 * @return
+	 */
+	RESTDataStore getDatastore(String layerName);
 }
