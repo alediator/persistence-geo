@@ -52,6 +52,17 @@ public interface GeoserverService {
 	public boolean unpublishGsDbLayer(String workspaceName, String layer);
 
 	/**
+	 * Unpublish layer identified by layerName, workspace and workspace
+	 * 
+	 * @param workspaceName
+	 * @param datastoreName
+	 * @param layer
+	 * 
+	 * @return true if can be unpublish and false otherwise
+	 */
+	public boolean unpublishLayer(String workspaceName, String datastoreName, String layerName);
+
+	/**
 	 * Publishes a vectorial layer with data in a PostGis database with the
 	 * default styles and given parameters.
 	 * 
