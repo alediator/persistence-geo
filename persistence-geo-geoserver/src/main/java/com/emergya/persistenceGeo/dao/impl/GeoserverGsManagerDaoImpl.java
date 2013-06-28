@@ -87,7 +87,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 	private static final Log LOG = LogFactory
 			.getLog(GeoserverGsManagerDaoImpl.class);
 
-	private static final String GET_COVERAGE_DETAILS_URL = "/rest/workspaces/%s/coveragestores/%s/coverages/%s.xml";
+	private static final String GET_COVERAGE_DETAILS_URL = "/r/workspaces/%s/coveragestores/%s/coverages/%s.xml";
 	private static final String GET_COVERAGE_STORE_DATA_URL = "/rest/workspaces/%s/coveragestores/%s.xml";
 	private static final String SET_LAYER_STYLE_URL = "/rest/layers/%s:%s";
 	private static final String SET_LAYER_STYLE_PAYLOAD = "<layer><enabled>true</enabled><defaultStyle><name>%s</name></defaultStyle></layer>";
@@ -854,5 +854,14 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 			throw new GeoserverException("Incorrect Geoserver layer '"
 					+ layerName + "'", np);
 		}
+	}
+
+	/**
+	 * Retrieves the geoserver url configured.
+	 * 
+	 * @return baseUrl to geoserver
+	 */
+	public String getGeoserverUrl(){
+		return getGsConfiguration().getServerUrl();
 	}
 }

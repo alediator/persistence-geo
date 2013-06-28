@@ -218,4 +218,11 @@ public interface GeoserverService {
 	 * @return
 	 */
 	public RESTDataStore getDatastore(String layerName);
+	
+	/**
+	 * Retrieves the geoserver url configured.
+	 * 
+	 * @return baseUrl to geoserver
+	 */
+	public String getGeoserverUrl();
 }

@@ -402,4 +402,13 @@ public class GeoserverServiceImpl implements GeoserverService {
 	public RESTDataStore getDatastore(String layerName){
 		return getGsDao().getDatastore(layerName);
 	}
+	
+	/**
+	 * Retrieves the geoserver url configured.
+	 * 
+	 * @return baseUrl to geoserver
+	 */
+	public String getGeoserverUrl(){
+		return getGsDao().getGeoserverUrl();
+	}
 }

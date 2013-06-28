@@ -280,4 +280,11 @@ public interface GeoserverDao {
 	 * @return
 	 */
 	RESTDataStore getDatastore(String layerName);
+
+	/**
+	 * Retrieves the geoserver url configured.
+	 * 
+	 * @return baseUrl to geoserver
+	 */
+	public String getGeoserverUrl();
 }
