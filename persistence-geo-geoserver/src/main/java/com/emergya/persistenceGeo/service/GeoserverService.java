@@ -61,6 +61,11 @@ public interface GeoserverService {
 	 * @return true if can be unpublish and false otherwise
 	 */
 	public boolean unpublishLayer(String workspaceName, String datastoreName, String layerName);
+	
+	public void copyLayer(String workspaceName, String datastoreName,
+			String layerName, String tableName, String title, BoundingBox bbox,
+			GeometryType type, String targetWorkspaceName,
+			String targetDatastoreName, String targetLayerName);
 
 	/**
 	 * Publishes a vectorial layer with data in a PostGis database with the

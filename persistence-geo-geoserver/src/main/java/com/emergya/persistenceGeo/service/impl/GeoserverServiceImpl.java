@@ -427,4 +427,14 @@ public class GeoserverServiceImpl implements GeoserverService {
 	public String getGeoserverUrl() {
 		return getGsDao().getGeoserverUrl();
 	}
+
+	public void copyLayer(String workspaceName, String datastoreName,
+			String layerName, String tableName, String title, BoundingBox bbox,
+			GeometryType type, String targetWorkspaceName,
+			String targetDatastoreName, String targetLayerName) {
+		publishGsDbLayer(workspaceName, tableName, targetLayerName, title,
+				bbox, type);
+		copyLayerStyle(layerName, targetLayerName);
+		setLayerStyle(workspaceName, targetLayerName, targetLayerName);
+	}
 }
