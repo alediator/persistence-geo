@@ -50,6 +50,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.httpclient.NameValuePair;
@@ -855,6 +856,21 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 					+ layerName + "'", np);
 		}
 	}
+	
+	/**
+	 * Retrieves all layers' name in geoserver
+	 * 
+	 * @return
+	 */
+	public List<String> getLayersNames(){
+		try {
+			return getReader().getLayers().getNames();
+		} catch (MalformedURLException e) {
+			LOG.error("Malformed Geoserver REST API URL", e);
+			throw new GeoserverException("Malformed Geoserver REST API URL", e);
+		}
+	}
+	
 
 	/**
 	 * Retrieves the geoserver url configured.

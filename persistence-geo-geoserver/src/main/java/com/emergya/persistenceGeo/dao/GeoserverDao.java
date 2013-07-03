@@ -33,6 +33,7 @@ import it.geosolutions.geoserver.rest.decoder.RESTWorkspaceList;
 
 import java.io.File;
 import java.net.URI;
+import java.util.List;
 
 import com.emergya.persistenceGeo.utils.GsCoverageDetails;
 import com.emergya.persistenceGeo.utils.GsCoverageStoreData;
@@ -287,4 +288,11 @@ public interface GeoserverDao {
 	 * @return baseUrl to geoserver
 	 */
 	public String getGeoserverUrl();
+	
+	/**
+	 * Retrieves all layers' name in geoserver
+	 * 
+	 * @return
+	 */
+	public List<String> getLayersNames();
 }

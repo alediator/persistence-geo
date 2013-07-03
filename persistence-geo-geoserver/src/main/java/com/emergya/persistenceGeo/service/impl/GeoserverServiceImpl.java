@@ -35,6 +35,7 @@ import it.geosolutions.geoserver.rest.decoder.RESTWorkspaceList.RESTShortWorkspa
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -436,5 +437,14 @@ public class GeoserverServiceImpl implements GeoserverService {
 				bbox, type);
 		copyLayerStyle(layerName, targetLayerName);
 		setLayerStyle(workspaceName, targetLayerName, targetLayerName);
+	}
+	
+	/**
+	 * Retrieves all layers' name in geoserver
+	 * 
+	 * @return
+	 */
+	public List<String> getLayersNames(){
+		return gsDao.getLayersNames();
 	}
 }

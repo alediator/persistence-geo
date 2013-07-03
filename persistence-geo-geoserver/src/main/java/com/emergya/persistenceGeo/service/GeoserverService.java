@@ -31,6 +31,7 @@ package com.emergya.persistenceGeo.service;
 import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
 
 import java.io.File;
+import java.util.List;
 
 import com.emergya.persistenceGeo.utils.BoundingBox;
 import com.emergya.persistenceGeo.utils.GsCoverageDetails;
@@ -241,4 +242,11 @@ public interface GeoserverService {
 	 * @return baseUrl to geoserver
 	 */
 	public String getGeoserverUrl();
+	
+	/**
+	 * Retrieves all layers' name in geoserver
+	 * 
+	 * @return
+	 */
+	public List<String> getLayersNames();
 }
