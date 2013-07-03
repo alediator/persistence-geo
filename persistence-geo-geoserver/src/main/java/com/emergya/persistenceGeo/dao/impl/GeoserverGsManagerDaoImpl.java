@@ -88,7 +88,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 	private static final Log LOG = LogFactory
 			.getLog(GeoserverGsManagerDaoImpl.class);
 
-	private static final String GET_COVERAGE_DETAILS_URL = "/r/workspaces/%s/coveragestores/%s/coverages/%s.xml";
+	private static final String GET_COVERAGE_DETAILS_URL = "/rest/workspaces/%s/coveragestores/%s/coverages/%s.xml";
 	private static final String GET_COVERAGE_STORE_DATA_URL = "/rest/workspaces/%s/coveragestores/%s.xml";
 	private static final String SET_LAYER_STYLE_URL = "/rest/layers/%s:%s";
 	private static final String SET_LAYER_STYLE_PAYLOAD = "<layer><enabled>true</enabled><defaultStyle><name>%s</name></defaultStyle></layer>";
@@ -274,7 +274,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 		}
 		boolean result = false;
 		GeoServerRESTPublisher publisher;
-		
+
 		String sanitizedPrefix = GeoserverUtils.createName(prefix);
 		try {
 			publisher = getPublisher();
@@ -299,13 +299,13 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 
 		boolean result = false;
 		GeoServerRESTStoreManager dsManager;
-		
+
 		String sanitizedName = GeoserverUtils.createName(datastoreName);
-		
+
 		try {
 			dsManager = getDatastoreManager();
-			GSPostGISDatastoreEncoder properties = 
-					new GSPostGISDatastoreEncoder(sanitizedName);
+			GSPostGISDatastoreEncoder properties = new GSPostGISDatastoreEncoder(
+					sanitizedName);
 			properties.setHost(gsConfiguration.getDbHost());
 			properties.setPort(gsConfiguration.getDbPort());
 			properties.setDatabase(gsConfiguration.getDbName());
@@ -337,8 +337,8 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 		String sanitizedName = GeoserverUtils.createName(datastoreName);
 		try {
 			dsManager = getDatastoreManager();
-			GSPostGISDatastoreEncoder properties = 
-					new GSPostGISDatastoreEncoder(sanitizedName);
+			GSPostGISDatastoreEncoder properties = new GSPostGISDatastoreEncoder(
+					sanitizedName);
 
 			properties.setDatabaseType(gsConfiguration.getDbType());
 			if (gsConfiguration.getDbSchema() != null
@@ -499,7 +499,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 	public boolean publishGeoTIFF(String workspace, String layerName,
 			File geotiff, String crs) {
 		GeoServerRESTPublisher gsPublisher;
-		
+
 		layerName = GeoserverUtils.createName(layerName);
 		boolean result = false;
 		try {
@@ -510,7 +510,8 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 					layerName, geotiff, crs, ProjectionPolicy.FORCE_DECLARED,
 					DEFAULT_RASTER_STYLE, null);
 			if (result) {
-				result = configureCoverage(workspace, layerName, crs, gsPublisher);
+				result = configureCoverage(workspace, layerName, crs,
+						gsPublisher);
 			}
 
 		} catch (FileNotFoundException e) {
@@ -528,9 +529,9 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 			File zipFile, String crs) {
 		boolean result = false;
 		GeoServerRESTPublisher gsPublisher;
-		
+
 		layerName = GeoserverUtils.createName(layerName);
-		
+
 		try {
 			gsPublisher = getPublisher();
 			NameValuePair paramName = new NameValuePair("coverageName",
@@ -538,7 +539,8 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 			result = gsPublisher.publishImageMosaic(workspaceName, layerName,
 					zipFile, ParameterConfigure.FIRST, paramName);
 			if (result) {
-				result = configureCoverage(workspaceName, layerName, crs, gsPublisher);
+				result = configureCoverage(workspaceName, layerName, crs,
+						gsPublisher);
 			}
 		} catch (FileNotFoundException e) {
 			LOG.error("File not found", e);
@@ -558,7 +560,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 		GeoServerRESTPublisher gsPublisher;
 
 		layerName = GeoserverUtils.createName(layerName);
-		
+
 		try {
 			gsPublisher = getPublisher();
 			NameValuePair paramName = new NameValuePair("coverageName",
@@ -775,7 +777,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 			LOG.error("Malformed Geoserver REST API URL", e);
 			throw new GeoserverException("Malformed Geoserver REST API URL", e);
 		}
-		
+
 		// The name is sanitized.
 		String newStyleNameSanitized = GeoserverUtils.createName(newStyleName);
 		return publisher.publishStyle(layerSDLContent, newStyleNameSanitized);
@@ -797,8 +799,10 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 		}
 
 		// The name is sanitized.
-		String newStyleNameSanitized = GeoserverUtils.createName(newLayerStyleName);
-		String payload = String.format(SET_LAYER_STYLE_PAYLOAD, newStyleNameSanitized);
+		String newStyleNameSanitized = GeoserverUtils
+				.createName(newLayerStyleName);
+		String payload = String.format(SET_LAYER_STYLE_PAYLOAD,
+				newStyleNameSanitized);
 
 		return this.put(url, payload) != null;
 	}
@@ -819,7 +823,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 
 		return publisher.removeStyle(styleName, true);
 	}
-	
+
 	@Override
 	public boolean reset() {
 		GeoServerRESTPublisher publisher;
@@ -832,7 +836,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 
 		return publisher.reset();
 	}
-	
+
 	/**
 	 * Retrieves a layer's datastore associated with the layer.
 	 * 
@@ -877,7 +881,7 @@ public class GeoserverGsManagerDaoImpl implements GeoserverDao {
 	 * 
 	 * @return baseUrl to geoserver
 	 */
-	public String getGeoserverUrl(){
+	public String getGeoserverUrl() {
 		return getGsConfiguration().getServerUrl();
 	}
 }
