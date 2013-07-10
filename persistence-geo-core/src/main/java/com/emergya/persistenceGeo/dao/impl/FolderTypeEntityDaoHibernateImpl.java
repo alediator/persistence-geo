@@ -33,8 +33,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,8 @@ public class FolderTypeEntityDaoHibernateImpl extends
 		FolderTypeEntityDao {
 
 	private static final String PARENT = "parent";
+	private static final String CHILD = "child";
+	private static final String DOT = ".";
 	private static final String ID = "id";
 
 	@Resource
@@ -73,12 +77,12 @@ public class FolderTypeEntityDaoHibernateImpl extends
 	 * @return List<AbstractFolderTypeEntity> folder types without children
 	 */
 	public List<AbstractFolderTypeEntity> getNotParentFolderTypes() {
-		return getSession()
-				.createCriteria(persistentClass)
-				.createAlias(ID, "_id")
-				.add(Subqueries.notExists(DetachedCriteria.forClass(
-						persistentClass, "child").add(
-						Restrictions.eqProperty("child." + PARENT, "_id"))))
-				.list();
+		Criteria crit = getSession().createCriteria(persistentClass);
+		return crit.add(
+				Subqueries.notExists(DetachedCriteria
+						.forClass(persistentClass, CHILD)
+						.add(Restrictions.eqProperty(CHILD + DOT + PARENT,
+								crit.getAlias() + DOT + ID))
+						.setProjection(Projections.id()))).list();
 	}
 }
