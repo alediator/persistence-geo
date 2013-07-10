@@ -29,6 +29,8 @@
  */
 package com.emergya.persistenceGeo.dao;
 
+import java.util.List;
+
 import com.emergya.persistenceGeo.metaModel.AbstractFolderTypeEntity;
 
 /**
@@ -39,5 +41,9 @@ import com.emergya.persistenceGeo.metaModel.AbstractFolderTypeEntity;
  */
 public interface FolderTypeEntityDao extends GenericDAO<AbstractFolderTypeEntity, Long> {
 
-	
+    /**
+	 * @return List<AbstractFolderTypeEntity>
+	 * 			folder types without children
+	 */
+	public List<AbstractFolderTypeEntity> getNotParentFolderTypes();
 }

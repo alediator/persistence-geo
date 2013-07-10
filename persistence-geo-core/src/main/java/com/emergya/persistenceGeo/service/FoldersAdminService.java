@@ -170,6 +170,12 @@ public interface FoldersAdminService extends AbstractService{
 	 * 			Devuelve la lista de todos los folder types
 	 */
 	public List<FolderTypeDto> getAllFolderType();
+    
+    /**
+	 * @return List<FolderTypeDto>
+	 * 			folder types without children
+	 */
+	public List<FolderTypeDto> getNotParentFolderTypes();
 	
 	/**
 	 * @param <code>excluded</code>

@@ -29,9 +29,14 @@
  */
 package com.emergya.persistenceGeo.dao.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -43,18 +48,37 @@ import com.emergya.persistenceGeo.metaModel.Instancer;
  * Folder Type DAO Hibernate Implementation
  * 
  * @author <a href="mailto:marcos@emergya.com">marcos</a>
- *
+ * 
  */
 @SuppressWarnings("unchecked")
 @Repository("folderTypeEntityDao")
-public class FolderTypeEntityDaoHibernateImpl extends GenericHibernateDAOImpl<AbstractFolderTypeEntity, Long> implements FolderTypeEntityDao {
+public class FolderTypeEntityDaoHibernateImpl extends
+		GenericHibernateDAOImpl<AbstractFolderTypeEntity, Long> implements
+		FolderTypeEntityDao {
+
+	private static final String PARENT = "parent";
+	private static final String ID = "id";
 
 	@Resource
 	private Instancer instancer;
 
 	@Autowired
-    public void init(SessionFactory sessionFactory) {
-        super.init(sessionFactory);
-		this.persistentClass = (Class<AbstractFolderTypeEntity>) instancer.createFolderType().getClass();
-    }
+	public void init(SessionFactory sessionFactory) {
+		super.init(sessionFactory);
+		this.persistentClass = (Class<AbstractFolderTypeEntity>) instancer
+				.createFolderType().getClass();
+	}
+
+	/**
+	 * @return List<AbstractFolderTypeEntity> folder types without children
+	 */
+	public List<AbstractFolderTypeEntity> getNotParentFolderTypes() {
+		return getSession()
+				.createCriteria(persistentClass)
+				.createAlias(ID, "_id")
+				.add(Subqueries.notExists(DetachedCriteria.forClass(
+						persistentClass, "child").add(
+						Restrictions.eqProperty("child." + PARENT, "_id"))))
+				.list();
+	}
 }

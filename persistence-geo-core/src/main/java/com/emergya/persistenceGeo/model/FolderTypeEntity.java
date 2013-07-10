@@ -31,11 +31,15 @@ package com.emergya.persistenceGeo.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -71,6 +75,13 @@ public class FolderTypeEntity extends AbstractFolderTypeEntity {
 	@Column(name = "folder_type")
 	public String getType() {
 		return type;
+	}
+
+	@ManyToOne(cascade = CascadeType.MERGE, 
+			fetch  = FetchType.LAZY)
+    @JoinColumn(name = "folder_type_parent_id")
+	public AbstractFolderTypeEntity getParent() {
+		return parent;
 	}
 
 	@Override
