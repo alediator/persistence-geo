@@ -85,4 +85,18 @@ public class FolderTypeEntityDaoHibernateImpl extends
 								crit.getAlias() + DOT + ID))
 						.setProjection(Projections.id()))).list();
 	}
+
+	/**
+	 * Obtain folder types by parent
+	 * 
+	 * @param parentId
+	 * 
+	 * @return List<AbstractFolderTypeEntity> folder types with parent
+	 *         identified by parentId
+	 */
+	public List<AbstractFolderTypeEntity> getFolderTypes(Long parentId) {
+		return getSession().createCriteria(persistentClass)
+				.createAlias(PARENT, PARENT)
+				.add(Restrictions.eq(PARENT + DOT + ID, parentId)).list();
+	}
 }

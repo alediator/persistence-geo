@@ -186,6 +186,14 @@ public interface FoldersAdminService extends AbstractService{
 	public List<FolderTypeDto> getIPTtFolderType(String[] excluded);
 	
 	/**
+	 * @param <code>parentId</code>
+	 * 
+	 * @return List<FolderTypeDto>
+	 * 			folder sub types of the folder type identified by <code>parentId</code>  
+	 */
+	public List<FolderTypeDto> getFolderTypes(Long parentId);
+	
+	/**
 	 * @param <code>typeId</code>
 	 * 
 	 * @return List<FolderTypeDto>

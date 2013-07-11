@@ -558,4 +558,17 @@ public class FoldersAdminServiceImpl extends
 		}
 		return dtoList;
 	}
+
+	@Override
+	public List<FolderTypeDto> getFolderTypes(Long parentId) {
+		List<FolderTypeDto> dtoList = new LinkedList<FolderTypeDto>();
+		List<AbstractFolderTypeEntity> entityList = folderTypeDao
+				.getFolderTypes(parentId);
+		if (entityList != null) {
+			for (AbstractFolderTypeEntity e : entityList) {
+				dtoList.add(entityToDto(e));
+			}
+		}
+		return dtoList;
+	}
 }
