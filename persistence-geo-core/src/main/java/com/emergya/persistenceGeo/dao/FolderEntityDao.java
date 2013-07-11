@@ -190,4 +190,12 @@ public interface FolderEntityDao extends GenericDAO<AbstractFolderEntity, Long> 
      * @return Entities list associated with the typeId and sub types of the type
      */
     public List<AbstractFolderEntity> findByType(Long typeId);
+	
+	/**
+	 * @param <code>typeId</code>
+	 * 
+	 * @return List<AbstractFolderEntity>
+	 * 			Devuelve la lista de todos los folder types que tenga el mismo type id y no tengan padre
+	 */
+	public List<AbstractFolderEntity> rootFoldersByType(Long typeId);
 }

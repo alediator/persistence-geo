@@ -142,7 +142,7 @@ public class RestTreeFolderController extends RestPersistenceGeoController
 		try {
 			// TODO: Use only type id!!
 			if (!StringUtils.isEmpty(type) && StringUtils.isNumeric(type)) {
-				nodes.addAll(getFoldersByType(Long.decode(type), filter));
+				nodes.addAll(getFoldersByType(Long.decode(type), filter, true));
 			} else if (NODE_TYPE_ZONE.equals(type)) {
 				nodes = (List<Treeable>) restFoldersAdminController
 						.loadFoldersByZone(nodeId, null).get(ROOT);
@@ -216,7 +216,7 @@ public class RestTreeFolderController extends RestPersistenceGeoController
 		List<FolderDto> serviceFolders = foldersAdminService.getChannelFolders(
 				zoneId == null ? null : Boolean.FALSE, zoneId, Boolean.TRUE,
 				folderType);
-		List<TreeFolderDto> folders = getFolderDecoration(null, serviceFolders);
+		List<TreeFolderDto> folders = getFolderDecoration(serviceFolders, true);
 		return folders;
 	}
 
@@ -231,10 +231,32 @@ public class RestTreeFolderController extends RestPersistenceGeoController
 	 * @return all folders of the type
 	 */
 	protected List<TreeFolderDto> getFoldersByType(Long typeId, String filter) {
+		return getFoldersByType(
+				typeId,
+				filter,
+				filter != null
+						&& filter
+								.contains(RestFoldersAdminController.SHOW_FOLDER_LAYERS));
+	}
+
+	/**
+	 * Obtain folders by type
+	 * 
+	 * @param typeId
+	 *            folder type
+	 * @param filter
+	 *            to decorate the result
+	 * @param showLayers
+	 *            flag to show layers in tree
+	 * 
+	 * @return all folders of the type
+	 */
+	protected List<TreeFolderDto> getFoldersByType(Long typeId, String filter,
+			boolean showLayers) {
 		List<FolderDto> serviceFolders = foldersAdminService
-				.findFoldersByType(typeId);
-		List<TreeFolderDto> folders = getFolderDecoration(filter,
-				serviceFolders);
+				.rootFoldersByType(typeId);
+		List<TreeFolderDto> folders = getFolderDecoration(serviceFolders,
+				showLayers);
 
 		if (filter != null && filter.contains(SHOW_UNASSIGNED_FOLDER_FILTER)) {
 
@@ -253,23 +275,21 @@ public class RestTreeFolderController extends RestPersistenceGeoController
 	/**
 	 * Obtain a folder list decorated with filter
 	 * 
-	 * @param filter
-	 *            with a known decoration or null
 	 * @param serviceFolders
 	 *            folders to decorate
+	 * @param showLayers
+	 *            flag to show layers in tree
 	 * 
 	 * @return folders decorated
 	 */
-	protected List<TreeFolderDto> getFolderDecoration(String filter,
-			List<FolderDto> serviceFolders) {
+	protected List<TreeFolderDto> getFolderDecoration(
+			List<FolderDto> serviceFolders, boolean showLayers) {
 		List<TreeFolderDto> folders = new LinkedList<TreeFolderDto>();
 		for (FolderDto subRes : serviceFolders) {
 			TreeFolderDto folder = (TreeFolderDto) FoldersUtils
 					.getFolderDecorator()
 					.applyStyle(subRes, FolderStyle.NORMAL);
-			if (filter != null
-					&& filter
-							.contains(RestFoldersAdminController.SHOW_FOLDER_LAYERS)) {
+			if (showLayers) {
 				folder.setLeaf(false);
 			} else {
 				folder.setLeaf(true);
@@ -310,9 +330,12 @@ public class RestTreeFolderController extends RestPersistenceGeoController
 		List<TreeFolderDto> previusFolders;
 		Long idZone = null;
 		if (filter.contains(RestFoldersAdminController.ALL_CHANNEL_IN_ZONES)) {
-			previusFolders = getFolderDecoration(filter,
+			previusFolders = getFolderDecoration(
 					foldersAdminService.getChannelFolders(Boolean.TRUE, null,
-							Boolean.TRUE, folderType));
+							Boolean.TRUE, folderType),
+					filter != null
+							&& filter
+									.contains(RestFoldersAdminController.SHOW_FOLDER_LAYERS));
 		} else {
 			if (!StringUtils.isEmpty(filter) && StringUtils.isNumeric(filter)) {
 				try {

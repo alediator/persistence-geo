@@ -393,5 +393,22 @@ public class FolderEntityDaoHibernateImpl extends
     	}
     	return typeAndSubTypes;
     }
+	
+	/**
+	 * @param <code>typeId</code>
+	 * 
+	 * @return List<AbstractFolderEntity>
+	 * 			Devuelve la lista de todos los folder types que tenga el mismo type id y no tengan padre
+	 */
+	public List<AbstractFolderEntity> rootFoldersByType(Long typeId){
+    	List<AbstractFolderEntity> folderList = new LinkedList<AbstractFolderEntity>();
+    	Criteria criteria = getSession().createCriteria(persistentClass);
+    	if(typeId != null){
+    		criteria.add(Restrictions.in("folderType.id", getTypeAndChildrenIds(typeId)));
+    	}
+    	criteria.add(Restrictions.isNull(PARENT));
+    	folderList.addAll(criteria.list());
+    	return folderList;
+	}
 
 }

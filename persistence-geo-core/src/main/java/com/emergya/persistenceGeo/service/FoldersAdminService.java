@@ -212,5 +212,13 @@ public interface FoldersAdminService extends AbstractService{
 	 * 			Devuelve la lista de todos los folder types que tenga el mismo type id
 	 */
 	public List<FolderDto> findFoldersByType(Long typeId);
+	
+	/**
+	 * @param <code>typeId</code>
+	 * 
+	 * @return List<FolderTypeDto>
+	 * 			Devuelve la lista de todos los folder types que tenga el mismo type id y no tengan padre
+	 */
+	public List<FolderDto> rootFoldersByType(Long typeId);
     
 }

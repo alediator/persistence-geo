@@ -587,4 +587,23 @@ public class FoldersAdminServiceImpl extends
 		}
 		return dtoList;
 	}
+	
+	/**
+	 * @param <code>typeId</code>
+	 * 
+	 * @return List<FolderTypeDto>
+	 * 			Devuelve la lista de todos los folder types que tenga el mismo type id y no tengan padre
+	 */
+	public List<FolderDto> rootFoldersByType(Long typeId){
+
+		List<FolderDto> dtoList = new LinkedList<FolderDto>();
+		List<AbstractFolderEntity> dtoTemp = new LinkedList<AbstractFolderEntity>();
+		if (typeId != null) {
+			dtoTemp = folderDao.rootFoldersByType(typeId);
+			for (AbstractFolderEntity f : dtoTemp) {
+				dtoList.add(entityToDto(f));
+			}
+		}
+		return dtoList;
+	}
 }
