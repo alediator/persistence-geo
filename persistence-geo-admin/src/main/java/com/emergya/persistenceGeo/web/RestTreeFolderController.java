@@ -30,6 +30,7 @@
 package com.emergya.persistenceGeo.web;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -52,9 +53,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.emergya.persistenceGeo.dto.FolderDto;
 import com.emergya.persistenceGeo.dto.FolderTypeDto;
 import com.emergya.persistenceGeo.dto.TreeFolderDto;
-import com.emergya.persistenceGeo.dto.TreeNode;
 import com.emergya.persistenceGeo.dto.Treeable;
 import com.emergya.persistenceGeo.service.FoldersAdminService;
+import com.emergya.persistenceGeo.utils.FolderStyle;
+import com.emergya.persistenceGeo.utils.FoldersUtils;
 
 /**
  * Rest controller to show trees with folders
@@ -138,45 +140,18 @@ public class RestTreeFolderController extends RestPersistenceGeoController
 		List<Treeable> nodes = new LinkedList<Treeable>();
 
 		try {
+			// TODO: Use only type id!!
 			if (!StringUtils.isEmpty(type) && StringUtils.isNumeric(type)) {
-				// is a folder type request
-				List<FolderDto> folders = foldersAdminService
-						.findFoldersByType(Long.decode(type));
-				if (!folders.isEmpty()) {
-					for (FolderDto folder : folders) {
-						nodes.add((Treeable) new TreeNode(folder, false));
-					}
-				}
+				nodes.addAll(getFoldersByType(Long.decode(type), filter));
 			} else if (NODE_TYPE_ZONE.equals(type)) {
-
 				nodes = (List<Treeable>) restFoldersAdminController
 						.loadFoldersByZone(nodeId, null).get(ROOT);
-
-			} else if (NODE_TYPE_CHANNELS_BY_ZONE.equals(type)
-					|| NODE_TYPE_CHANNELS_ROOT.equals(type)) {
-
-				Map<String, Object> result = restFoldersAdminController
-						.loadChannels(filter);
-
-				if (((Boolean) result.get(SUCCESS)) && filter != null
-						&& filter.contains(SHOW_UNASSIGNED_FOLDER_FILTER)) {
-
-					List<TreeFolderDto> folders = (List<TreeFolderDto>) result
-							.get(ROOT);
-
-					FolderDto unassingedLayersFolder = new FolderDto();
-					unassingedLayersFolder
-							.setId(RestFoldersAdminController.UNASSIGNED_LAYERS_VIRTUAL_FOLDER_ID);
-					unassingedLayersFolder.setName("Otros");
-
-					folders.add(new TreeFolderDto(unassingedLayersFolder));
-					Collections.sort(folders);
-					nodes.addAll(folders);
-				}else{
-					nodes = (List<Treeable>) result.get(ROOT);
-				}
+			} else if (NODE_TYPE_CHANNELS_ROOT.equals(type)) {
+				nodes.addAll(getFoldersByType(
+						FoldersAdminService.DEFAULT_FOLDER_TYPE, filter));
+			} else if (NODE_TYPE_CHANNELS_BY_ZONE.equals(type)) {
+				nodes.addAll(getFoldersByZone(filter));
 			} else {
-
 				// The rest of types are consider like folders
 				nodes = (List<Treeable>) restFoldersAdminController
 						.loadFoldersById(nodeId, filter).get(ROOT);
@@ -225,5 +200,129 @@ public class RestTreeFolderController extends RestPersistenceGeoController
 		result.put(ROOT, nodes != null ? nodes : ListUtils.EMPTY_LIST);
 
 		return result;
+	}
+
+	/**
+	 * Obtain folders by zone
+	 * 
+	 * @param zoneId
+	 *            zone id
+	 * @param folderType
+	 *            to obtain
+	 * 
+	 * @return all folders of the zone
+	 */
+	protected List<TreeFolderDto> getFoldersByZone(Long zoneId, Long folderType) {
+		List<FolderDto> serviceFolders = foldersAdminService.getChannelFolders(
+				zoneId == null ? null : Boolean.FALSE, zoneId, Boolean.TRUE,
+				folderType);
+		List<TreeFolderDto> folders = getFolderDecoration(null, serviceFolders);
+		return folders;
+	}
+
+	/**
+	 * Obtain folders by type
+	 * 
+	 * @param typeId
+	 *            folder type
+	 * @param filter
+	 *            to decorate the result
+	 * 
+	 * @return all folders of the type
+	 */
+	protected List<TreeFolderDto> getFoldersByType(Long typeId, String filter) {
+		List<FolderDto> serviceFolders = foldersAdminService
+				.findFoldersByType(typeId);
+		List<TreeFolderDto> folders = getFolderDecoration(filter,
+				serviceFolders);
+
+		if (filter != null && filter.contains(SHOW_UNASSIGNED_FOLDER_FILTER)) {
+
+			FolderDto unassingedLayersFolder = new FolderDto();
+			unassingedLayersFolder
+					.setId(RestFoldersAdminController.UNASSIGNED_LAYERS_VIRTUAL_FOLDER_ID);
+			unassingedLayersFolder.setName("Otros");
+
+			folders.add(new TreeFolderDto(unassingedLayersFolder));
+			Collections.sort(folders);
+		}
+
+		return folders;
+	}
+
+	/**
+	 * Obtain a folder list decorated with filter
+	 * 
+	 * @param filter
+	 *            with a known decoration or null
+	 * @param serviceFolders
+	 *            folders to decorate
+	 * 
+	 * @return folders decorated
+	 */
+	protected List<TreeFolderDto> getFolderDecoration(String filter,
+			List<FolderDto> serviceFolders) {
+		List<TreeFolderDto> folders = new LinkedList<TreeFolderDto>();
+		for (FolderDto subRes : serviceFolders) {
+			TreeFolderDto folder = (TreeFolderDto) FoldersUtils
+					.getFolderDecorator()
+					.applyStyle(subRes, FolderStyle.NORMAL);
+			if (filter != null
+					&& filter
+							.contains(RestFoldersAdminController.SHOW_FOLDER_LAYERS)) {
+				folder.setLeaf(false);
+			} else {
+				folder.setLeaf(true);
+			}
+			folders.add(folder);
+		}
+		return folders;
+	}
+
+	/**
+	 * Obtain folders by zone
+	 * 
+	 * @param filter
+	 *            to apply
+	 * 
+	 * @return folders in the filter
+	 */
+	protected Collection<? extends Treeable> getFoldersByZone(String filter) {
+		// TODO: Remove this method and generalize by folderType
+		return getFoldersByZone(
+				filter,
+				filter.contains(RestFoldersAdminController.HIDE_IPT_CHANNELS) ? FoldersAdminService.DEFAULT_FOLDER_TYPE
+						: null);
+	}
+
+	/**
+	 * Obtain folders by zone
+	 * 
+	 * @param filter
+	 *            to apply
+	 * @param folderType
+	 *            to obtain
+	 * 
+	 * @return folders in the filter
+	 */
+	protected Collection<? extends Treeable> getFoldersByZone(String filter,
+			Long folderType) {
+		List<TreeFolderDto> previusFolders;
+		Long idZone = null;
+		if (filter.contains(RestFoldersAdminController.ALL_CHANNEL_IN_ZONES)) {
+			previusFolders = getFolderDecoration(filter,
+					foldersAdminService.getChannelFolders(Boolean.TRUE, null,
+							Boolean.TRUE, folderType));
+		} else {
+			if (!StringUtils.isEmpty(filter) && StringUtils.isNumeric(filter)) {
+				try {
+					idZone = Long.decode(filter);
+				} catch (Exception e) {
+					LOG.error("Error loading channels in zone");
+				}
+			}
+			previusFolders = getFoldersByZone(idZone, folderType);
+		}
+		return previusFolders;
 	}
 }

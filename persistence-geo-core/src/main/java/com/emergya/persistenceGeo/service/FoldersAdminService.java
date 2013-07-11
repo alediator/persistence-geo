@@ -118,6 +118,18 @@ public interface FoldersAdminService extends AbstractService{
 	 * @return folder list
 	 */
 	public List<FolderDto> getChannelFolders(Boolean inZone, Long idZone, Boolean isEnabled);
+	
+	/**
+	 * Get all channel folders filterd
+	 * 
+	 * @param inZone indicates if obtain channel folders with a zone. If this parameter is null only obtain not zoned channels
+	 * @param idZone filter by zone. Obtain only channels of the zone identified by <code>idZone</code>
+	 * @param isEnabled
+	 * @param folderType folder type to obtain
+	 * 
+	 * @return folder list
+	 */
+	public List<FolderDto> getChannelFolders(Boolean inZone, Long idZone, Boolean isEnabled, Long folderType);
 
     /**
      * Get a folders list by zones. If zoneId is NULL returns all the
